@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediateDynamics", "IntermediateDynamics\IntermediateDynamics.csproj", "{D64CDA97-525B-4F6B-8F6F-959589042975}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediateDynamicsTestApp", "IntermediateDynamicsTestApp\IntermediateDynamicsTestApp.csproj", "{69823E2C-A540-47A2-9E41-C52F753972C7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D64CDA97-525B-4F6B-8F6F-959589042975} = {D64CDA97-525B-4F6B-8F6F-959589042975}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D64CDA97-525B-4F6B-8F6F-959589042975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D64CDA97-525B-4F6B-8F6F-959589042975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D64CDA97-525B-4F6B-8F6F-959589042975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D64CDA97-525B-4F6B-8F6F-959589042975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69823E2C-A540-47A2-9E41-C52F753972C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69823E2C-A540-47A2-9E41-C52F753972C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69823E2C-A540-47A2-9E41-C52F753972C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69823E2C-A540-47A2-9E41-C52F753972C7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BBE6799A-FAFB-4781-AF3E-772F377D8C66}
+	EndGlobalSection
+EndGlobal
