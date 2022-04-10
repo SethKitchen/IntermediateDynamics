@@ -1,17 +1,10 @@
 ﻿using MathNet.Spatial.Euclidean;
 using System;
-using MathNet.Symbolics;
-using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace IntermediateDynamics
 {
     public static class DynamicsVector3D
     {
-        public const string I_HAT_LATEX = @"\hat{\textbf{i}}";
-        public const string J_HAT_LATEX = @"\hat{\textbf{j}}";
-        public const string K_HAT_LATEX = @"\hat{\textbf{k}}";
-        public const string UNIT_HAT_LATEX = @"\hat{\textbf{e}}";
-
         /// <summary>
         /// "The utility of a component representation is that operations can be performed on the individual components without recourse to diagrams."
         /// Ginsberg, Jerry.Engineering Dynamics(pp. 3). Cambridge University Press. Kindle Edition.
@@ -21,7 +14,46 @@ namespace IntermediateDynamics
         /// <remarks>1.1.5</remarks>
         public static string ComponentRepresentation(this Vector3D vector)
         {
-            return vector.X + I_HAT_LATEX + "+" + vector.Y + J_HAT_LATEX + "+" + vector.Z + K_HAT_LATEX;
+            string toReturn = "";
+            if (vector.X != 0)
+            {
+                toReturn += vector.X + LaTexHelpers.I_HAT_LATEX;
+                if (vector.Y != 0)
+                {
+                    toReturn += "+" + vector.Y + LaTexHelpers.J_HAT_LATEX;
+                    if (vector.Z != 0)
+                    {
+                        toReturn += "+" + vector.Z + LaTexHelpers.K_HAT_LATEX;
+                    }
+                }
+                else
+                {
+                    if (vector.Z != 0)
+                    {
+                        toReturn += "+" + vector.Z + LaTexHelpers.K_HAT_LATEX;
+                    }
+                }
+            }
+            else
+            {
+                if (vector.Y != 0)
+                {
+                    toReturn += vector.Y + LaTexHelpers.J_HAT_LATEX;
+                    if (vector.Z != 0)
+                    {
+                        toReturn += "+" + vector.Z + LaTexHelpers.K_HAT_LATEX;
+                    }
+                }
+                else
+                {
+                    if (vector.Z != 0)
+                    {
+                        toReturn += vector.Z + LaTexHelpers.K_HAT_LATEX;
+                    }
+                }
+            }
+
+            return toReturn;
         }
 
         /// <summary>
@@ -33,17 +65,24 @@ namespace IntermediateDynamics
         /// <remarks>1.1.5</remarks>
         public static string ComponentRepresentation(this Vector2D vector)
         {
-            return vector.X + I_HAT_LATEX + "+" + vector.Y + J_HAT_LATEX;
-        }
+            string toReturn = "";
+            if (vector.X != 0)
+            {
+                toReturn += vector.X + LaTexHelpers.I_HAT_LATEX;
+                if (vector.Y != 0)
+                {
+                    toReturn += "+" + vector.Y + LaTexHelpers.J_HAT_LATEX;
+                }
+            }
+            else
+            {
+                if (vector.Y != 0)
+                {
+                    toReturn += vector.Y + LaTexHelpers.J_HAT_LATEX;
+                }
+            }
 
-        /// <summary>
-        /// Bolds and arrows a variable expression so it is in vector notation.
-        /// </summary>
-        /// <param name="variable">A variable, ie. x</param>
-        /// <returns>The LaTex vector notation of the variable, ie \vec{x} .</returns>
-        public static string LaTex(Expr variable)
-        {
-            return @"\vec{"+variable.ToLaTeX()+"}";
+            return toReturn;
         }
 
         /// <summary>
@@ -70,15 +109,6 @@ namespace IntermediateDynamics
             return Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
         }
 
-        /// <summary>
-        /// Vertical bars around a variable expression so it is in magnitude notation.
-        /// </summary>
-        /// <param name="variable">A variable, ie. x</param>
-        /// <returns>The LaTex vector notation of the magnitude of the variable, ie \abs{x}</returns>
-        public static string MagnitudeLaTex(Expr variable)
-        {
-            return @"\abs{" + variable.ToLaTeX() + "}";
-        }
 
         /// <summary>
         /// "In many situations we need to construct a unit vector parallel to a vector. This is readily obtained from the preceding equation as
@@ -104,16 +134,6 @@ namespace IntermediateDynamics
         public static Vector2D UnitVector(this Vector2D vector)
         {
             return vector / vector.Magnitude();
-        }
-
-        /// <summary>
-        /// Bold and arrows e around a variable expression so it is in unit vector notation.
-        /// </summary>
-        /// <param name="variable">A variable, ie. x</param>
-        /// <returns>The LaTex vector notation of the magnitude of the variable, ie \abs{x}</returns>
-        public static string UnitVectorLaTex(Expr variable)
-        {
-            return UNIT_HAT_LATEX + "_{" + variable.ToLaTeX() + "}";
         }
 
         /// <summary>
@@ -144,6 +164,9 @@ namespace IntermediateDynamics
             return Math.Acos(one.DotProduct(two) / (one.Magnitude() * two.Magnitude()));
         }
 
-
+        public static VectorExpr3D ConvertToExpr(this Vector3D toConvert)
+        {
+            return new VectorExpr3D(toConvert.X, toConvert.Y, toConvert.Z);
+        }
     }
 }
