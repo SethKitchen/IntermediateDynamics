@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using IntermediateDynamics;
 using MathNet.Spatial.Euclidean;
+using MathNet.Symbolics;
+using Expr = MathNet.Symbolics.SymbolicExpression;
 using System;
 
 namespace IntermediateDynamicsTests
@@ -18,13 +20,15 @@ namespace IntermediateDynamicsTests
         [Test]
         public void Test_Eq_1_1_23()
         {
-            Vector3D A = new Vector3D(1, 2, 3);
-            Vector3D B = new Vector3D(3, -1, -5);
+            Vector3D A = new(1, 2, 3);
+            Vector3D B = new(3, -1, -5);
             Vector3D C = A.CrossProduct(B);
             Vector3D e = C / C.Magnitude();
-            Assert.AreEqual(e,C.UnitVector());
+            Assert.AreEqual(e, C.UnitVector());
             double A1 = A.DotProduct(e);
+            Assert.AreEqual(A1, 0);
             double B1 = B.DotProduct(e);
+            Assert.AreEqual(B1, 0);
         }
 
         /// <summary>
@@ -37,7 +41,9 @@ namespace IntermediateDynamicsTests
             double gamma = 40 * Math.PI / 180;
             Vector3D r_ba = 2 * new Vector3D(Math.Cos(theta), Math.Sin(theta), 0);
             Assert.AreEqual(r_ba, new Vector3D(1.8126155740732999, 0.8452365234813989, 0));
-            Vector3D r_cb = new Vector3D(1.5 * Math.Cos(gamma) * Math.Cos(theta), 1.5 * Math.Cos(gamma) * Math.Sin(theta), 1.5 * Math.Sin(gamma));
+            string componentRepresentation = r_ba.ComponentRepresentation();
+            Assert.AreEqual(componentRepresentation, @"1.8126155740732999\hat{\textbf{i}}+0.8452365234813989\hat{\textbf{j}}");
+            Vector3D r_cb = new(1.5 * Math.Cos(gamma) * Math.Cos(theta), 1.5 * Math.Cos(gamma) * Math.Sin(theta), 1.5 * Math.Sin(gamma));
             Assert.AreEqual(r_cb, new Vector3D(1.0414080660223257, 0.4856165564505969, 0.9641814145298089));
             Vector3D r_ca = r_ba + r_cb;
             Assert.AreEqual(r_ca, new Vector3D(2.8540236400956256, 1.3308530799319958, 0.9641814145298089));
