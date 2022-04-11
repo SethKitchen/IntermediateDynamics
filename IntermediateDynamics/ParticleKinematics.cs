@@ -1,4 +1,5 @@
-﻿using MathNet.Spatial.Euclidean;
+﻿using MathNet.Numerics.Integration;
+using MathNet.Spatial.Euclidean;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,5 +155,86 @@ namespace IntermediateDynamics
         {
             return -(-m * Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH * e_b.Z);
         }
+
+        /// <summary>
+        /// Calculates r_bar_prime from first derivatives of components.
+        /// Ginsberg, Jerry.Engineering Dynamics(pp. 41). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        /// <param name="x_prime">The first derivative of the x component function of the particle.</param>
+        /// <param name="y_prime">The first derivative of the y component function of the particle.</param>
+        /// <param name="z_prime">The first derivative of the z component function of the particle.</param>
+        /// <returns>r_bar_prime</returns>
+        public static Expr SolveForRBarPrimeFromFirstDerivativeComponents(Expr x_prime, Expr y_prime, Expr z_prime)
+        {
+            var toReturn = x_prime*x_prime+ y_prime*y_prime + z_prime*z_prime;
+            toReturn = Expr.Parse("(" + toReturn.ToString() + ")^0.5");
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Root finds parametric from expected integral equivalence.
+        /// Ginsberg, Jerry.Engineering Dynamics(pp. 41-42). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        /// <param name="integral_equivalence">In the example it is s(B_p). At the interested time, what value do the components make?</param>
+        /// <param name="lower_bound_of_integral">In the example it is 0. What is the parametric at the initial component state?</param>
+        /// <param name="max_search_value">How high to look before giving up?</param>
+        /// <param name="function_to_integrate">In the example it is s'. At the interested time, what is the derivative of the vector that the components make up?</param>
+        /// <param name="margin">How close does the approximation need to be to the correct answer?</param>
+        /// <returns>r_bar_prime</returns>
+        public static double RootFindParametric(double integral_equivalence, double lower_bound_of_integral, double max_search_value, Func<double, double> function_to_integrate, double margin)
+        {
+            for(double i= lower_bound_of_integral+0.01; i<=max_search_value; i+=0.01)
+            {
+                var toCheck = GaussLegendreRule.Integrate(function_to_integrate, lower_bound_of_integral, i, 5);
+                if(Math.Abs(toCheck-integral_equivalence) < margin)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Gets the tangent unit vector from parametric functions.
+        /// Ginsberg, Jerry.Engineering Dynamics(pp. 37). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        /// <param name="r_bar_prime">r'</param>
+        /// <param name="s_prime">s'</param>
+        /// <returns>e_t</returns>
+        public static Vector3D GetTangentUnitVector(Vector3D r_bar_prime, double s_prime)
+        {
+            return r_bar_prime / s_prime;
+        }
+
+        /// <summary>
+        /// Gets the normal unit vector from parametric functions.
+        /// Ginsberg, Jerry.Engineering Dynamics(pp. 39). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        /// <param name="r_bar_prime">r'</param>
+        /// <param name="r_bar_double_prime">r'</param>
+        /// <param name="s_prime">s'</param>
+        /// <returns>e_n</returns>
+        public static Vector3D GetNormalUnitVector(Vector3D r_bar_prime, Vector3D r_bar_double_prime, double s_prime)
+        {
+            var partOne = (s_prime * s_prime * r_bar_double_prime) - (r_bar_prime.DotProduct(r_bar_double_prime)*r_bar_prime);
+            var partTwo = s_prime * Math.Pow((s_prime * s_prime) * (r_bar_double_prime.DotProduct(r_bar_double_prime)) - Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime),2), 0.5);
+            return partOne / partTwo;
+        }
+
+        /// <summary>
+        /// Gets the radius of curvature from parametric functions.
+        /// Ginsberg, Jerry.Engineering Dynamics(pp. 39). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        /// <param name="r_bar_prime">r'</param>
+        /// <param name="r_bar_double_prime">r'</param>
+        /// <param name="s_prime">s'</param>
+        /// <returns>rho</returns>
+        public static double GetRadiusOfCurvatureParametric(Vector3D r_bar_prime, Vector3D r_bar_double_prime, double s_prime)
+        {
+            var partOne = s_prime * s_prime * s_prime;
+            var partTwo = Math.Pow((r_bar_double_prime.DotProduct(r_bar_double_prime)*s_prime*s_prime-Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime),2)), 0.5);
+            return partOne / partTwo;
+        }
+
     }
 }

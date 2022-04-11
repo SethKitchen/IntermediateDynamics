@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32228.343
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntermediateDynamics", "IntermediateDynamics\IntermediateDynamics.csproj", "{D64CDA97-525B-4F6B-8F6F-959589042975}"
 EndProject
@@ -10,7 +10,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntermediateDynamicsTestApp
 		{D64CDA97-525B-4F6B-8F6F-959589042975} = {D64CDA97-525B-4F6B-8F6F-959589042975}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntermediateDynamicsTests", "IntermediateDynamicsTests\IntermediateDynamicsTests.csproj", "{14D34C25-8458-41A6-A799-99C5E9BB923F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntermediateDynamicsTests", "IntermediateDynamicsTests\IntermediateDynamicsTests.csproj", "{14D34C25-8458-41A6-A799-99C5E9BB923F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
