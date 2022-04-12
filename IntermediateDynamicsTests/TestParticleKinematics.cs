@@ -122,5 +122,32 @@ namespace IntermediateDynamicsTests
             var a_bar = vDotAtTime.RealValue * e_t + vAtTime.RealValue * vAtTime.RealValue / rho * e_n;
             Assert.AreEqual(a_bar, new Vector3D(60.786684815200175, 28.329194048887643, 14.375361349489616));
         }
+
+        /// <summary>
+        ///  Ginsberg, Jerry.Engineering Dynamics(p. 47). Cambridge University Press. Kindle Edition.
+        /// </summary>
+        [Test]
+        public void Test_Ex_2_4()
+        {
+            var resultant_force = new VectorExpr3D(Expr.Zero, Expr.Parse("(1.6-4*y)*10^(-3)"), Expr.Parse(""+(10 * Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH * 1e-6)));
+            var a_bar = resultant_force / (10 * 1e-6);
+            a_bar.Y = a_bar.Y.ExponentialSimplify();
+            Assert.AreEqual(a_bar.X.ToString(), Expr.Zero.ToString());
+            Assert.AreEqual(a_bar.Y.ToString(), Expr.Parse("160.00000000000003 - 400.00000000000006*y").ToString());
+            Assert.AreEqual(a_bar.Z.ToString(), Expr.Parse("" + Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH).ToString());
+            var v_dot_x = a_bar.X;
+            var v_dot_y = a_bar.Y;
+            var v_dot_z = a_bar.Z;
+            var x_double_dot = a_bar.X;
+            var y_double_dot = a_bar.Y;
+            var z_double_dot = a_bar.Z;
+            var v_bar_0 = new Vector3D(20 * Math.Cos(45 * Math.PI / 180) * Math.Cos(20 * Math.PI / 180), -20 * Math.Cos(45 * Math.PI / 180) * Math.Sin(20 * Math.PI / 180), 20 * Math.Sin(45 * Math.PI / 180));
+            Assert.AreEqual(v_bar_0, new Vector3D(13.289260487773495, -4.836895252959505, 14.142135623730951));
+
+            var x_dot_0 = v_bar_0.X;
+            var y_dot_0 = v_bar_0.Y;
+            var z_dot_0 = v_bar_0.Z;
+
+        }
     }
 }
