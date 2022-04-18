@@ -148,6 +148,48 @@ namespace IntermediateDynamicsTests
             var y_dot_0 = v_bar_0.Y;
             var z_dot_0 = v_bar_0.Z;
 
+            ////////////////////////////////////////////////// Symbolics doesn't integrate yet
+            // integral of x_double_dot=0 is x_dot = c_1
+            // Double integral of x_double_dot=0 is x=c_1*t+c_2
+            // 13.289 = c_1
+            // 0 = c_1*0+c_2 means c_2 = 0
+            var x = Expr.Parse("13.289260487773495*t");
+
+            // double integral of y_double_dot is y=c_5*cos(20*t)+c_6*sin(20*t)+0.4
+            // derivative of this is y_dot = -20*c_5*sin(20*t)+20*c_6*cos(20*t)
+            // c_5 = -0.4
+            // -4.836895252959505 = 20*c_6
+            var y = Expr.Parse("-0.4*cos(20*t)-.241*sin(20*t)+0.4");
+
+            // integral of z_double_dot=-9.807 is z_dot = -9.807*t + c3
+            // double integral of z_double_dot is z = -9.807t^2/2+c3*t+c4
+            // 14.142135623730951 = c3
+            // 0 = c4
+            var z = Expr.Parse("-4.9035*t^2+14.1421*t");
+
+            var t_f=Util.SolveForVariable(0, 10, "t", 0.4, y);
+            Assert.AreEqual(t_f, 0.10500000000000008);
+
+            var symbols = new Dictionary<string, FloatingPoint> { { "t", t_f } };
+
+            var xAns = x.Evaluate(symbols);
+            Assert.AreEqual(xAns.RealValue, 1.3953723512162179);
+
+            var yAns = y.Evaluate(symbols);
+            Assert.AreEqual(yAns.RealValue, 0.39390498447756506);
+
+            var zAns = z.Evaluate(symbols);
+            Assert.AreEqual(zAns.RealValue, 1.4308594125000009);
+
+            var xDotAns = x.Differentiate("t").Evaluate(symbols);
+            Assert.AreEqual(xDotAns.RealValue, 13.289260487773495);
+
+            var yDotAns = y.Differentiate("t").Evaluate(symbols);
+            Assert.AreEqual(yDotAns.RealValue, 9.3390331573623033);
+
+            var zDotAns = z.Differentiate("t").Evaluate(symbols);
+            Assert.AreEqual(zDotAns.RealValue, 13.112364999999999);
+
         }
     }
 }
