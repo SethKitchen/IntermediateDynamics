@@ -167,7 +167,7 @@ namespace IntermediateDynamicsTests
             // 0 = c4
             var z = Expr.Parse("-4.9035*t^2+14.1421*t");
 
-            var t_f=Util.SolveForVariable(0, 10, "t", 0.4, y);
+            var t_f=Util.SolveForVariable(0, 10, "t", 0.4, .01, y);
             Assert.AreEqual(t_f, 0.10500000000000008);
 
             var symbols = new Dictionary<string, FloatingPoint> { { "t", t_f } };
