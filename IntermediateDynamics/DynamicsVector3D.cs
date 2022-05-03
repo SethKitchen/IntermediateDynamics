@@ -1,4 +1,5 @@
-﻿using MathNet.Spatial.Euclidean;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Spatial.Euclidean;
 using System;
 
 namespace IntermediateDynamics
@@ -167,6 +168,20 @@ namespace IntermediateDynamics
         public static VectorExpr3D ConvertToExpr(this Vector3D toConvert)
         {
             return new VectorExpr3D(toConvert.X, toConvert.Y, toConvert.Z);
+        }
+
+        public static Matrix<double> GetMatrix(this Vector3D toConvert)
+        {
+            Matrix<double> toReturn = Matrix<double>.Build.Dense(3, 1);
+            toReturn[0,0] = toConvert.X;
+            toReturn[1,0] = toConvert.Y;
+            toReturn[2,0] = toConvert.Z;
+            return toReturn;
+        }
+
+        public static Vector3D FromMatrix(this Matrix<double> toConvert)
+        {
+            return new Vector3D(toConvert[0,0], toConvert[1,0], toConvert[2,0]);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using MathNet.Spatial.Euclidean;
+﻿using MathNet.Numerics.LinearAlgebra;
+using MathNet.Spatial.Euclidean;
 using MathNet.Symbolics;
 using System;
 using System.Collections.Generic;
