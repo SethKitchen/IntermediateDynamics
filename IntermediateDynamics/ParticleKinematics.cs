@@ -1,10 +1,6 @@
 ﻿using MathNet.Numerics.Integration;
 using MathNet.Spatial.Euclidean;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace IntermediateDynamics
@@ -105,14 +101,14 @@ namespace IntermediateDynamics
         }
 
         /// <summary>
-        /// Calculates binormal unit vector
+        /// Calculates bi-normal unit vector
         /// Ginsberg, Jerry.Engineering Dynamics(pp. 34). Cambridge University Press. Kindle Edition.
         /// </summary>
         /// <param name="e_t">The tangential unit vector of the particle.</param>
         /// <param name="e_n">The normal unit vector of the particle.</param>
-        /// <returns>The binormal unit vector of the particle.</returns>
+        /// <returns>The bi-normal unit vector of the particle.</returns>
         /// <remarks>2.1.10</remarks>
-        public static Vector3D SolveForBinormalUnitVector(Vector3D e_t, Vector3D e_n)
+        public static Vector3D SolveForBiNormalUnitVector(Vector3D e_t, Vector3D e_n)
         {
             return e_t.CrossProduct(e_n);
         }
@@ -123,7 +119,7 @@ namespace IntermediateDynamics
         /// </summary>
         /// <param name="e_t">The tangential unit vector of the particle.</param>
         /// <param name="m">The mass of the particle.</param>
-        /// <param name="v_dot">The tangential acceleration of the particle.</param
+        /// <param name="v_dot">The tangential acceleration of the particle.</param>
         /// <returns>The external tangential forces of particle.</returns>
         public static double SolveForExternalTangentialForces(Vector3D e_t, double m, double v_dot)
         {
@@ -136,8 +132,8 @@ namespace IntermediateDynamics
         /// </summary>
         /// <param name="e_n">The normal unit vector of the particle.</param>
         /// <param name="m">The mass of the particle.</param>
-        /// <param name="s_dot">The speed of the particle aka v.</param
-        /// <param name="rho">The radius of curvature of the particle.</param
+        /// <param name="s_dot">The speed of the particle aka v.</param>
+        /// <param name="rho">The radius of curvature of the particle.</param>
         /// <returns>The external normal forces of particle.</returns>
         public static double SolveForExternalNormalForces(Vector3D e_n, double m, double s_dot, double rho)
         {
@@ -145,13 +141,13 @@ namespace IntermediateDynamics
         }
 
         /// <summary>
-        /// Calculates external binormal forces
+        /// Calculates external bi-normal forces
         /// Ginsberg, Jerry.Engineering Dynamics(pp. 37-38). Cambridge University Press. Kindle Edition.
         /// </summary>
-        /// <param name="e_b">The binormal unit vector of the particle.</param>
+        /// <param name="e_b">The bi-normal unit vector of the particle.</param>
         /// <param name="m">The mass of the particle.</param>
-        /// <returns>The external binormal forces of particle.</returns>
-        public static double SolveForExternalBinormalForces(Vector3D e_b, double m)
+        /// <returns>The external bi-normal forces of particle.</returns>
+        public static double SolveForExternalBiNormalForces(Vector3D e_b, double m)
         {
             return -(-m * Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH * e_b.Z);
         }
@@ -166,7 +162,7 @@ namespace IntermediateDynamics
         /// <returns>r_bar_prime</returns>
         public static Expr SolveForRBarPrimeFromFirstDerivativeComponents(Expr x_prime, Expr y_prime, Expr z_prime)
         {
-            var toReturn = x_prime*x_prime+ y_prime*y_prime + z_prime*z_prime;
+            var toReturn = x_prime * x_prime + y_prime * y_prime + z_prime * z_prime;
             toReturn = Expr.Parse("(" + toReturn.ToString() + ")^0.5");
             return toReturn;
         }
@@ -183,10 +179,10 @@ namespace IntermediateDynamics
         /// <returns>r_bar_prime</returns>
         public static double RootFindParametric(double integral_equivalence, double lower_bound_of_integral, double max_search_value, Func<double, double> function_to_integrate, double margin)
         {
-            for(double i= lower_bound_of_integral+0.01; i<=max_search_value; i+=0.01)
+            for (double i = lower_bound_of_integral + 0.01; i <= max_search_value; i += 0.01)
             {
                 var toCheck = GaussLegendreRule.Integrate(function_to_integrate, lower_bound_of_integral, i, 5);
-                if(Math.Abs(toCheck-integral_equivalence) < margin)
+                if (Math.Abs(toCheck - integral_equivalence) < margin)
                 {
                     return i;
                 }
@@ -216,8 +212,8 @@ namespace IntermediateDynamics
         /// <returns>e_n</returns>
         public static Vector3D GetNormalUnitVector(Vector3D r_bar_prime, Vector3D r_bar_double_prime, double s_prime)
         {
-            var partOne = (s_prime * s_prime * r_bar_double_prime) - (r_bar_prime.DotProduct(r_bar_double_prime)*r_bar_prime);
-            var partTwo = s_prime * Math.Pow((s_prime * s_prime) * (r_bar_double_prime.DotProduct(r_bar_double_prime)) - Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime),2), 0.5);
+            var partOne = (s_prime * s_prime * r_bar_double_prime) - (r_bar_prime.DotProduct(r_bar_double_prime) * r_bar_prime);
+            var partTwo = s_prime * Math.Pow((s_prime * s_prime) * (r_bar_double_prime.DotProduct(r_bar_double_prime)) - Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime), 2), 0.5);
             return partOne / partTwo;
         }
 
@@ -232,9 +228,8 @@ namespace IntermediateDynamics
         public static double GetRadiusOfCurvatureParametric(Vector3D r_bar_prime, Vector3D r_bar_double_prime, double s_prime)
         {
             var partOne = s_prime * s_prime * s_prime;
-            var partTwo = Math.Pow((r_bar_double_prime.DotProduct(r_bar_double_prime)*s_prime*s_prime-Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime),2)), 0.5);
+            var partTwo = Math.Pow((r_bar_double_prime.DotProduct(r_bar_double_prime) * s_prime * s_prime - Math.Pow(r_bar_prime.DotProduct(r_bar_double_prime), 2)), 0.5);
             return partOne / partTwo;
         }
-
     }
 }

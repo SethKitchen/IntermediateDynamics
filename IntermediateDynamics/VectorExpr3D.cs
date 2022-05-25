@@ -1,11 +1,6 @@
-﻿using MathNet.Numerics.LinearAlgebra;
-using MathNet.Spatial.Euclidean;
+﻿using MathNet.Spatial.Euclidean;
 using MathNet.Symbolics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace IntermediateDynamics
@@ -29,11 +24,6 @@ namespace IntermediateDynamics
         /// The Z Component.
         /// </summary>
         public Expr Z { get; set; }
-
-        private VectorExpr3D()
-        {
-
-        }
 
         public VectorExpr3D(Expr x, Expr y, Expr z)
         {
@@ -160,7 +150,6 @@ namespace IntermediateDynamics
         /// "The utility of a component representation is that operations can be performed on the individual components without recourse to diagrams."
         /// Ginsberg, Jerry.Engineering Dynamics(pp. 3). Cambridge University Press. Kindle Edition.
         /// </summary>
-        /// <param name="vector">The vector which we would like to see the representation of.</param>
         /// <returns>LaTex string of the component representation of the given <c>vector</c>.</returns>
         /// <remarks>1.1.5</remarks>
         public string ComponentRepresentation()

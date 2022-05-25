@@ -2,12 +2,8 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MathNet.Spatial.Euclidean;
 using Expr = MathNet.Symbolics.SymbolicExpression;
-using MathNet.Numerics.Integration;
 using MathNet.Symbolics;
 
 namespace IntermediateDynamicsTests
@@ -41,7 +37,7 @@ namespace IntermediateDynamicsTests
 
             Assert.AreEqual(center, new Vector3D(-2551.0197963532833, -1089.1674597402275, -1953.0416589733472));
 
-            Vector3D e_b = ParticleKinematics.SolveForBinormalUnitVector(e_ba, e_n);
+            Vector3D e_b = ParticleKinematics.SolveForBiNormalUnitVector(e_ba, e_n);
 
             Assert.AreEqual(e_b, new Vector3D(-8.326672684688674E-17, 0.8733693623277108, -0.4870584738481488));
 
@@ -53,10 +49,9 @@ namespace IntermediateDynamicsTests
 
             Assert.AreEqual(externalNormalForces, 339.91574254246422);
 
-            double externalBinormalForces = ParticleKinematics.SolveForExternalBinormalForces(e_b, 5);
+            double externalBiNormalForces = ParticleKinematics.SolveForExternalBiNormalForces(e_b, 5);
 
-            Assert.AreEqual(externalBinormalForces, -23.861029201124598);
-
+            Assert.AreEqual(externalBiNormalForces, -23.861029201124598);
         }
 
         /// <summary>
@@ -76,7 +71,7 @@ namespace IntermediateDynamicsTests
             var z = Expr.Parse("0.1*B^2");
             var zPrime = z.Differentiate("B");
             var zDoublePrime = zPrime.Differentiate("B");
-            
+
             var s = Expr.Parse("10*t^2");
             var symbols = new Dictionary<string, FloatingPoint> { { "t", 0.5 } };
             var sAtTime = s.Evaluate(symbols);
@@ -87,7 +82,7 @@ namespace IntermediateDynamicsTests
 
             // Math.symbolics cannot integrate yet, and Numerics must be in Func<double, double> form
             // We have to manually generate the function found above sPrimeSimplified.
-            Func<double, double> function_to_integrate = x => Math.Pow(0.04 + 0.08 * (x * x), 0.5);
+            static double function_to_integrate(double x) => Math.Pow(0.04 + 0.08 * (x * x), 0.5);
 
             double betaPrime = ParticleKinematics.RootFindParametric(sAtTime.RealValue, 0, 10, function_to_integrate, 0.005);
 
@@ -105,7 +100,6 @@ namespace IntermediateDynamicsTests
             var e_t = ParticleKinematics.GetTangentUnitVector(rPrimeAtTime, sPrimeAtTime.RealValue);
             Assert.AreEqual(e_t, new Vector3D(0.43151697555861146, -0.5733468287668306, 0.696467166309918));
 
-
             var e_n = ParticleKinematics.GetNormalUnitVector(rPrimeAtTime, rDoublePrimeAtTime, sPrimeAtTime.RealValue);
             Assert.AreEqual(e_n, new Vector3D(0.7949872407742137, 0.6065880554709596, 0.0067983796718306625));
 
@@ -114,8 +108,8 @@ namespace IntermediateDynamicsTests
 
             var v = s.Differentiate("t");
             var vAtTime = v.Evaluate(symbols);
-            var vdot = v.Differentiate("t");
-            var vDotAtTime = vdot.Evaluate(symbols);
+            var vDot = v.Differentiate("t");
+            var vDotAtTime = vDot.Evaluate(symbols);
 
             var v_bar = vAtTime.RealValue * e_t;
             Assert.AreEqual(v_bar, new Vector3D(4.315169755586115, -5.733468287668306, 6.96467166309918));
@@ -129,24 +123,14 @@ namespace IntermediateDynamicsTests
         [Test]
         public void Test_Ex_2_4()
         {
-            var resultant_force = new VectorExpr3D(Expr.Zero, Expr.Parse("(1.6-4*y)*10^(-3)"), Expr.Parse(""+(10 * Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH * 1e-6)));
+            var resultant_force = new VectorExpr3D(Expr.Zero, Expr.Parse("(1.6-4*y)*10^(-3)"), Expr.Parse("" + (10 * Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH * 1e-6)));
             var a_bar = resultant_force / (10 * 1e-6);
             a_bar.Y = a_bar.Y.ExponentialSimplify();
             Assert.AreEqual(a_bar.X.ToString(), Expr.Zero.ToString());
             Assert.AreEqual(a_bar.Y.ToString(), Expr.Parse("160.00000000000003 - 400.00000000000006*y").ToString());
             Assert.AreEqual(a_bar.Z.ToString(), Expr.Parse("" + Constants.GRAVITATIONAL_ACCELERATION_ON_EARTH).ToString());
-            var v_dot_x = a_bar.X;
-            var v_dot_y = a_bar.Y;
-            var v_dot_z = a_bar.Z;
-            var x_double_dot = a_bar.X;
-            var y_double_dot = a_bar.Y;
-            var z_double_dot = a_bar.Z;
             var v_bar_0 = new Vector3D(20 * Math.Cos(45 * Math.PI / 180) * Math.Cos(20 * Math.PI / 180), -20 * Math.Cos(45 * Math.PI / 180) * Math.Sin(20 * Math.PI / 180), 20 * Math.Sin(45 * Math.PI / 180));
             Assert.AreEqual(v_bar_0, new Vector3D(13.289260487773495, -4.836895252959505, 14.142135623730951));
-
-            var x_dot_0 = v_bar_0.X;
-            var y_dot_0 = v_bar_0.Y;
-            var z_dot_0 = v_bar_0.Z;
 
             ////////////////////////////////////////////////// Symbolics doesn't integrate yet
             // integral of x_double_dot=0 is x_dot = c_1
@@ -167,7 +151,7 @@ namespace IntermediateDynamicsTests
             // 0 = c4
             var z = Expr.Parse("-4.9035*t^2+14.1421*t");
 
-            var t_f=Util.SolveForVariable(0, 10, "t", 0.4, .01, y);
+            var t_f = Util.SolveForVariable(0, 10, "t", 0.4, .01, y);
             Assert.AreEqual(t_f, 0.10500000000000008);
 
             var symbols = new Dictionary<string, FloatingPoint> { { "t", t_f } };
@@ -189,7 +173,6 @@ namespace IntermediateDynamicsTests
 
             var zDotAns = z.Differentiate("t").Evaluate(symbols);
             Assert.AreEqual(zDotAns.RealValue, 13.112364999999999);
-
         }
     }
 }

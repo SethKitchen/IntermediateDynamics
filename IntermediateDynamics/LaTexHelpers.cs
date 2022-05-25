@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Expr = MathNet.Symbolics.SymbolicExpression;
+﻿using Expr = MathNet.Symbolics.SymbolicExpression;
 
 namespace IntermediateDynamics
 {
@@ -15,11 +10,11 @@ namespace IntermediateDynamics
         public const string UNIT_HAT_LATEX = @"\hat{\textbf{e}}";
 
         /// <summary>
-        /// Bolds and arrows a variable expression so it is in vector notation.
+        /// Bold and arrows a variable expression so it is in vector notation.
         /// </summary>
         /// <param name="variable">A variable, ie. x</param>
         /// <returns>The LaTex vector notation of the variable, ie \vec{x} .</returns>
-        public static string VectorizeLaTex(Expr variable)
+        public static string VectorLaTex(Expr variable)
         {
             return @"\vec{" + variable.ToLaTeX() + "}";
         }

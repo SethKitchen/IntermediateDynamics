@@ -1,8 +1,6 @@
 using NUnit.Framework;
 using IntermediateDynamics;
 using MathNet.Spatial.Euclidean;
-using MathNet.Symbolics;
-using Expr = MathNet.Symbolics.SymbolicExpression;
 using System;
 
 namespace IntermediateDynamicsTests
@@ -58,6 +56,13 @@ namespace IntermediateDynamicsTests
             Assert.AreEqual(M_A, new Vector3D(0, 9555.46228801865, -13189.339915232826));
             double M_AB = M_A.DotProduct(r_ba.UnitVector());
             Assert.AreEqual(M_AB, 4038.3128622912491d);
+        }
+
+        [Test]
+        public void Test_Component_Representation()
+        {
+            Vector3D v = new Vector3D(1, 2, 3);
+            Assert.AreEqual(v.ComponentRepresentation(), @"1\hat{\textbf{i}}+2\hat{\textbf{j}}+3\hat{\textbf{k}}");
         }
     }
 }

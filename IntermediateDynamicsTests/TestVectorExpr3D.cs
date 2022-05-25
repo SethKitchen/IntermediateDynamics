@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using IntermediateDynamics;
 using MathNet.Spatial.Euclidean;
-using MathNet.Symbolics;
 using Expr = MathNet.Symbolics.SymbolicExpression;
 using System;
 

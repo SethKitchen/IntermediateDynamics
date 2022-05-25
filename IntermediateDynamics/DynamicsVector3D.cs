@@ -110,7 +110,6 @@ namespace IntermediateDynamics
             return Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y);
         }
 
-
         /// <summary>
         /// "In many situations we need to construct a unit vector parallel to a vector. This is readily obtained from the preceding equation as
         /// [vector divided by its magnitude]".
@@ -138,13 +137,13 @@ namespace IntermediateDynamics
         }
 
         /// <summary>
-        /// REIMPLMENTED FOR LEARNING (equivalent to AngleTo)
+        /// REIMPLEMENTED FOR LEARNING (equivalent to AngleTo)
         /// When vectors are placed tail to tail what is the angle between them?
         /// Ginsberg, Jerry.Engineering Dynamics(p. 4). Cambridge University Press. Kindle Edition.
         /// </summary>
         /// <param name="one">The first of the compared vectors.</param>
         /// <param name="two">The second of the compared vectors.</param>
-        /// <returns>The arccos of the dot product and magnitude of the given <c>one</c> and <c>two</c> vectors.</returns>
+        /// <returns>The arccosine of the dot product and magnitude of the given <c>one</c> and <c>two</c> vectors.</returns>
         /// <remarks>1.1.9</remarks>
         public static double AngleBetween(this Vector3D one, Vector3D two)
         {
@@ -152,13 +151,13 @@ namespace IntermediateDynamics
         }
 
         /// <summary>
-        /// REIMPLMENTED FOR LEARNING (equivalent to AngleTo)
+        /// REIMPLEMENTED FOR LEARNING (equivalent to AngleTo)
         /// When vectors are placed tail to tail what is the angle between them?
         /// Ginsberg, Jerry.Engineering Dynamics(p. 4). Cambridge University Press. Kindle Edition.
         /// </summary>
         /// <param name="one">The first of the compared vectors.</param>
         /// <param name="two">The second of the compared vectors.</param>
-        /// <returns>The arccos of the dot product and magnitude of the given <c>one</c> and <c>two</c> vectors.</returns>
+        /// <returns>The arccosine of the dot product and magnitude of the given <c>one</c> and <c>two</c> vectors.</returns>
         /// <remarks>1.1.9</remarks>
         public static double AngleBetween(this Vector2D one, Vector2D two)
         {
@@ -173,15 +172,15 @@ namespace IntermediateDynamics
         public static Matrix<double> GetMatrix(this Vector3D toConvert)
         {
             Matrix<double> toReturn = Matrix<double>.Build.Dense(3, 1);
-            toReturn[0,0] = toConvert.X;
-            toReturn[1,0] = toConvert.Y;
-            toReturn[2,0] = toConvert.Z;
+            toReturn[0, 0] = toConvert.X;
+            toReturn[1, 0] = toConvert.Y;
+            toReturn[2, 0] = toConvert.Z;
             return toReturn;
         }
 
         public static Vector3D FromMatrix(this Matrix<double> toConvert)
         {
-            return new Vector3D(toConvert[0,0], toConvert[1,0], toConvert[2,0]);
+            return new Vector3D(toConvert[0, 0], toConvert[1, 0], toConvert[2, 0]);
         }
     }
 }

@@ -6,9 +6,9 @@ namespace IntermediateDynamicsTestApp
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            String ans = (new Vector3D(2, 4, 5)).ComponentRepresentation();
+            string ans = (new Vector3D(2, 4, 5)).ComponentRepresentation();
             Console.WriteLine(ans);
         }
     }
