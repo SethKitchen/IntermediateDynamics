@@ -93,9 +93,15 @@ namespace IntermediateDynamicsTests
             var rDoublePrimeAtTime = new Vector3D(xDoublePrime.Evaluate(symbols2).RealValue, yDoublePrime.Evaluate(symbols2).RealValue, zDoublePrime.Evaluate(symbols2).RealValue);
             var sPrimeAtTime = sPrime.Evaluate(symbols2);
 
-            Assert.AreEqual(rPrimeAtTime, new Vector3D(0.49938130485460674, -0.6635166255352589, 0.8059999999999917));
-            Assert.AreEqual(rDoublePrimeAtTime, new Vector3D(0.8187302909529202, 0.37325153807604516, 0.2));
-            Assert.AreEqual(sPrimeAtTime.RealValue, 1.1572691994518707d);
+            Assert.Less(Math.Abs(rPrimeAtTime.X - 0.49938130485460674), 0.001);
+            Assert.Less(Math.Abs(rPrimeAtTime.Y + 0.6635166255352589), 0.001);
+            Assert.Less(Math.Abs(rPrimeAtTime.Z - 0.8059999999999917), 0.001);
+
+            Assert.Less(Math.Abs(rDoublePrimeAtTime.X - 0.8187302909529202), 0.001);
+            Assert.Less(Math.Abs(rDoublePrimeAtTime.Y - 0.37325153807604516), 0.001);
+            Assert.Less(Math.Abs(rDoublePrimeAtTime.Z - 0.2), 0.001);
+
+            Assert.Less(Math.Abs(sPrimeAtTime.RealValue - 1.1572691994518707), 0.001);
 
             var e_t = ParticleKinematics.GetTangentUnitVector(rPrimeAtTime, sPrimeAtTime.RealValue);
             Assert.AreEqual(e_t, new Vector3D(0.43151697555861146, -0.5733468287668306, 0.696467166309918));
