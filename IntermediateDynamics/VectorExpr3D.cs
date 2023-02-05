@@ -77,6 +77,11 @@ namespace IntermediateDynamics
             return new VectorExpr3D(Y * v2.Z - Z * v2.Y, Z * v2.X - X * v2.Z, X * v2.Y - Y * v2.X);
         }
 
+        public VectorExpr3D DotProduct(VectorExpr3D v2)
+        {
+            return new VectorExpr3D(X*v2.X, Y*v2.Y, Z*v2.Z);
+        }
+
         /// <summary>
         /// Hacks the definition of a derivative to get a approximation of velocity at a certain time using a small interval
         /// Ginsberg, Jerry.Engineering Dynamics(pp. 12). Cambridge University Press. Kindle Edition.
